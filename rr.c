@@ -2037,6 +2037,11 @@ static const ldns_rdf_type type_caa_wireformat[] = {
 	LDNS_RDF_TYPE_TAG,
 	LDNS_RDF_TYPE_LONG_STR
 };
+static const ldns_rdf_type type_lb_wireformat[] = {
+	LDNS_RDF_TYPE_INT16,
+	LDNS_RDF_TYPE_GEOCODE,
+	LDNS_RDF_TYPE_DNAME
+};
 /** \endcond */
 
 /** \cond */
@@ -2425,6 +2430,10 @@ static ldns_rr_descriptor rdata_field_descriptors[] = {
 #else
 {LDNS_RR_TYPE_NULL, "TYPE258", 1, 1, type_0_wireformat, LDNS_RDF_TYPE_NONE, LDNS_RR_NO_COMPRESS, 0 },
 #endif
+{LDNS_RR_TYPE_NULL, "TYPE259", 1, 1, type_0_wireformat, LDNS_RDF_TYPE_NONE, LDNS_RR_NO_COMPRESS, 0 },
+
+{LDNS_RR_TYPE_LB, "LB", 3, 3, type_lb_wireformat, LDNS_RDF_TYPE_NONE, LDNS_RR_COMPRESS, 0 },
+
 
 /* split in array, no longer contiguous */
 

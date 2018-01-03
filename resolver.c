@@ -117,6 +117,12 @@ ldns_resolver_nameserver_count(const ldns_resolver *r)
 }
 
 bool
+ldns_resolver_lbsupport(const ldns_resolver *r)
+{
+	return r->_lbsupport;
+}
+
+bool
 ldns_resolver_dnssec(const ldns_resolver *r)
 {
 	return r->_dnssec;
@@ -379,6 +385,12 @@ void
 ldns_resolver_set_recursive(ldns_resolver *r, bool re)
 {
 	r->_recursive = re;
+}
+
+void
+ldns_resolver_set_lbsupport(ldns_resolver *r, bool d)
+{
+	r->_lbsupport = d;
 }
 
 void
@@ -1340,6 +1352,14 @@ ldns_resolver_prepare_query_pkt(ldns_pkt **query_pkt, ldns_resolver *r,
 		if (ldns_resolver_dnssec_cd(r) || (flags & LDNS_CD)) {
 			ldns_pkt_set_cd(*query_pkt, true);
 		}
+	}
+	
+	/* set LS bit if necessary */
+	if (ldns_resolver_lbsupport(r)) {
+		if (ldns_resolver_edns_udp_size(r) == 0) {
+			ldns_resolver_set_edns_udp_size(r, 4096);
+		}
+		ldns_pkt_set_edns_ls(*query_pkt, true);
 	}
 
 	/* transfer the udp_edns_size from the resolver to the packet */

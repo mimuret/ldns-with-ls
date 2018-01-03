@@ -90,7 +90,8 @@ struct ldns_struct_resolver
 	uint8_t _retrans;
 	/**  Use new fallback mechanism (try EDNS, then do TCP) */
 	bool _fallback;
-
+	/**  Whether to do LB Support */
+	bool _lbsupport;
 	/**  Whether to do DNSSEC */
 	bool _dnssec;
 	/**  Whether to set the CD bit on DNSSEC requests */
@@ -235,6 +236,12 @@ bool ldns_resolver_defnames(const ldns_resolver *r);
  * \return true: yes, false: no
  */
 bool ldns_resolver_dnsrch(const ldns_resolver *r);
+/**
+ * Does the resolver do LB Support
+ * \param[in] r the resolver
+ * \return true: yes, false: no
+ */
+bool ldns_resolver_lbsupport(const ldns_resolver *r);
 /**
  * Does the resolver do DNSSEC
  * \param[in] r the resolver
@@ -441,6 +448,13 @@ void ldns_resolver_set_usevc(ldns_resolver *r, bool b);
  * \param[in] b true: use the list, false: don't use the list
  */
 void ldns_resolver_set_dnsrch(ldns_resolver *r, bool b);
+
+/**
+ * Whether the resolver uses LBSupport
+ * \param[in] r the resolver
+ * \param[in] b true: use LBSupport, false: don't use LBSupport
+ */
+void ldns_resolver_set_lbsupport(ldns_resolver *r, bool b);
 
 /**
  * Whether the resolver uses DNSSEC

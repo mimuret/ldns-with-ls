@@ -1280,6 +1280,13 @@ ldns_rdf2buffer_str_hip(ldns_buffer *output, const ldns_rdf *rdf)
 	}
 	return ldns_buffer_status(output);
 }
+ldns_status
+ldns_rdf2buffer_str_geocode(ldns_buffer *output, const ldns_rdf *rdf)
+{
+	ldns_buffer_printf(output, "%c", ldns_rdf_data(rdf)[0]);
+	ldns_buffer_printf(output, "%c", ldns_rdf_data(rdf)[1]);
+	return ldns_buffer_status(output);
+}
 
 static ldns_status
 ldns_rdf2buffer_str_fmt(ldns_buffer *buffer,
@@ -1395,6 +1402,9 @@ ldns_rdf2buffer_str_fmt(ldns_buffer *buffer,
 			break;
 		case LDNS_RDF_TYPE_LONG_STR:
 			res = ldns_rdf2buffer_str_long_str(buffer, rdf);
+			break;
+		case LDNS_RDF_TYPE_GEOCODE:
+			res = ldns_rdf2buffer_str_geocode(buffer, rdf);
 			break;
 		}
 	} else {

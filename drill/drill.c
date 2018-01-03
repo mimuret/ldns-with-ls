@@ -39,6 +39,7 @@ usage(FILE *stream, const char *progname)
 	fprintf(stream, "\t<class> defaults to IN\n");
 	fprintf(stream, "\n\targuments may be placed in random order\n");
 	fprintf(stream, "\n  Options:\n");
+	fprintf(stream, "\t-L\t\tenable LB (DS bit)\n");
 	fprintf(stream, "\t-D\t\tenable DNSSEC (DO bit)\n");
 #ifdef HAVE_SSL
 	fprintf(stream, "\t-T\t\ttrace from the root down to <name>\n");
@@ -151,6 +152,7 @@ main(int argc, char *argv[])
 	uint16_t 	qbuf;
 	uint16_t	qport;
 	uint8_t		qfamily;
+	bool		qlbsupport;
 	bool		qdnssec;
 	bool		qfallback;
 	bool		qds;
@@ -190,6 +192,7 @@ main(int argc, char *argv[])
 	qflags = LDNS_RD;
 	qport = LDNS_PORT;
 	verbosity = 2;
+	qlbsupport = false;
 	qdnssec = false;
 	qfamily = LDNS_RESOLV_INETANY;
 	qfallback = false;
@@ -205,7 +208,7 @@ main(int argc, char *argv[])
 	/* global first, query opt next, option with parm's last
 	 * and sorted */ /*  "46DITSVQf:i:w:q:achuvxzy:so:p:b:k:" */
 	                               
-	while ((c = getopt(argc, argv, "46ab:c:d:Df:hi:I:k:o:p:q:Qr:sStTuvV:w:xy:z")) != -1) {
+	while ((c = getopt(argc, argv, "46ab:c:d:LDf:hi:I:k:o:p:q:Qr:sStTuvV:w:xy:z")) != -1) {
 		switch(c) {
 			/* global options */
 			case '4':
@@ -213,6 +216,9 @@ main(int argc, char *argv[])
 				break;
 			case '6':
 				qfamily = LDNS_RESOLV_INET6;
+				break;
+			case 'L':
+				qlbsupport = true;
 				break;
 			case 'D':
 				qdnssec = true;
@@ -535,6 +541,7 @@ main(int argc, char *argv[])
 			if (status != LDNS_STATUS_OK) {
 				error("%s", "@server ip could not be converted");
 			}
+			ldns_resolver_set_lbsupport(cmdline_res, qlbsupport);
 			ldns_resolver_set_dnssec(cmdline_res, qdnssec);
 			ldns_resolver_set_ip6(cmdline_res, qfamily);
 			ldns_resolver_set_fallback(cmdline_res, qfallback);
@@ -577,6 +584,7 @@ main(int argc, char *argv[])
 	} else {
 		ldns_resolver_set_debug(res, false);
 	}
+	ldns_resolver_set_lbsupport(res, qlbsupport);
 	ldns_resolver_set_dnssec(res, qdnssec);
 /*	ldns_resolver_set_dnssec_cd(res, qdnssec);*/
 	ldns_resolver_set_ip6(res, qfamily);
