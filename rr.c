@@ -2039,7 +2039,7 @@ static const ldns_rdf_type type_caa_wireformat[] = {
 };
 static const ldns_rdf_type type_lb_wireformat[] = {
 	LDNS_RDF_TYPE_INT16,
-	LDNS_RDF_TYPE_GEOCODE,
+	LDNS_RDF_TYPE_STR,
 	LDNS_RDF_TYPE_DNAME
 };
 /** \endcond */

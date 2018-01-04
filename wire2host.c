@@ -211,7 +211,6 @@ ldns_wire2rdf(ldns_rr *rr, const uint8_t *wire, size_t max, size_t *pos)
 		case LDNS_RDF_TYPE_TYPE:
 		case LDNS_RDF_TYPE_INT16:
 		case LDNS_RDF_TYPE_CERT_ALG:
-		case LDNS_RDF_TYPE_GEOCODE:
 			cur_rdf_length = LDNS_RDF_SIZE_WORD;
 			break;
 		case LDNS_RDF_TYPE_TIME:
